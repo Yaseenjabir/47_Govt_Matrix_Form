@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Add this in your CSS file or in a <style> tag */
+@keyframes spinZ {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+.spin {
+  animation: spinZ 1s ease-in-out;
+}
+
+@keyframes flipVertical {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.flip {
+  animation: flipVertical 1s ease-in-out;
+}
