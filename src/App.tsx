@@ -6,7 +6,7 @@ interface CategoryProps {
   categoryId: number;
   categoryTitle: string;
   categoryDescription: string;
-  options: { label: string; value: string; points: number }[];
+  options: { label: string; value: string; id?: string }[];
   selectedOption: string | null;
   setSelectedOption: (value: string | null) => void;
   setTotalScore: any;
@@ -15,7 +15,6 @@ interface CategoryProps {
 }
 
 const Category = ({
-  // categoryId,
   categoryTitle,
   categoryDescription,
   options,
@@ -25,20 +24,19 @@ const Category = ({
   spinKey,
   setSpinKey,
 }: CategoryProps) => {
-  const handleCheckboxChange = (value: string, points: number) => {
+  function handleCheckboxChange(value: string) {
     if (selectedOption !== value) {
       if (selectedOption !== null) {
         setTotalScore((prev: any) => prev - Number(selectedOption));
       }
       setSelectedOption(value);
-      setTotalScore((prev: any) => prev + points);
+      setTotalScore((prev: any) => prev + Number(value));
     } else {
       setSelectedOption(null);
-      setTotalScore((prev: any) => prev - points);
+      setTotalScore((prev: any) => prev - Number(value));
     }
-
     setSpinKey((prevKey: any) => prevKey + 1);
-  };
+  }
 
   return (
     <div className="w-full">
@@ -50,20 +48,20 @@ const Category = ({
           {parse(categoryDescription)}
         </div>
         <div className="flex flex-col p-5 items-center ">
-          {options.map(({ label, value, points }) => (
+          {options.map(({ label, value, id }) => (
             <div
               className="flex w-full pl-5 md:pl-10 font-semibold my-2 items-start justify-start gap-1"
               key={value}
             >
               <input
                 className="mt-2"
-                id={label}
+                id={id ? id : label}
                 type="checkbox"
                 value={value}
-                onChange={() => handleCheckboxChange(value, points)}
+                onChange={() => handleCheckboxChange(value)}
                 checked={selectedOption === value}
               />
-              <label htmlFor={label}>{label}</label>
+              <label htmlFor={id ? id : label}>{label}</label>
             </div>
           ))}
         </div>
@@ -166,12 +164,12 @@ function App2() {
           </ul>
       `,
       options: [
-        { label: "Five years plus", value: "25", points: 25 },
-        { label: "Four to five years", value: "20", points: 20 },
-        { label: "Three to four years", value: "15", points: 15 },
-        { label: "One to three years", value: "10", points: 10 },
-        { label: "One to two years", value: "5", points: 5 },
-        { label: "Less than one year", value: "0", points: 0 },
+        { label: "Five years plus", value: "25" },
+        { label: "Four to five years", value: "20" },
+        { label: "Three to four years", value: "15" },
+        { label: "Two to three years", value: "10" },
+        { label: "One to two years", value: "5" },
+        { label: "Less than one year", value: "0" },
       ],
       selectedOption: selectedOption1,
       setSelectedOption: setSelectedOption1,
@@ -194,9 +192,9 @@ function App2() {
           </div>
       `,
       options: [
-        { label: "Superior", value: "15", points: 15 },
-        { label: "Proficient", value: "10", points: 10 },
-        { label: "Competent", value: "0", points: 0 },
+        { label: "Superior", value: "15" },
+        { label: "Proficient", value: "10" },
+        { label: "Competent", value: "0" },
       ],
       selectedOption: selectedOption2,
       setSelectedOption: setSelectedOption2,
@@ -226,9 +224,9 @@ function App2() {
           </div>
       `,
       options: [
-        { label: "Superior/proficient", value: "5", points: 5 },
-        { label: "Decent", value: "00", points: 0 },
-        { label: "Not Applicable", value: "0", points: 0 },
+        { label: "Superior/proficient", value: "5" },
+        { label: "Decent", value: "00" },
+        { label: "Not Applicable", id: "Not applicable 1", value: "0" },
       ],
       selectedOption: selectedOption3,
       setSelectedOption: setSelectedOption3,
@@ -242,19 +240,8 @@ function App2() {
       categoryDescription: `
       <div className="flex flex-col gap-3">
             <h1 className="text-lg font-bold">
-              What is your spouse/partner's English proficiency as defined by
-              Home Affairs?
+             Is your nominated occupation on the ACT Critical Skills List?
             </h1>
-            <p className="font-semibold">
-              They meet the Home Affairs requirement for the level of English
-              claimed or hold an Australian passport.
-            </p>
-            <p className="font-semibold">
-              Note: an Australian passport only equates to 'competent' English.
-              If you wish to claim point in this category, your spouse/partner
-              must meet the Home Affairs requirements for the level of English
-              claimed.
-            </p>
           </div>
       `,
       options: [
@@ -262,13 +249,11 @@ function App2() {
           label:
             "Your nominated occupation is ON the ACT Critical Skills List.",
           value: "20",
-          points: 20,
         },
         {
           label:
             "Your nominated occupation is NOT on the ACT Critical Skills List.",
           value: "00",
-          points: 0,
         },
       ],
       selectedOption: selectedOption4,
@@ -331,18 +316,16 @@ function App2() {
           label:
             "Your business has actively traded in Canberra for at least twelve months from the date you established or purchased the business. The business has a minimum turnover of at least $200,000 for the last twelve months business activity.",
           value: "20",
-          points: 20,
         },
         {
           label:
             "Your business has actively traded in Canberra for at least six months from the date you established or purchased the business. The business has a minimum annual turnover of at least $100,000 for the last six months business activity.",
           value: "10",
-          points: 10,
         },
         {
-          label: "Not Applicable Here",
-          value: "0",
-          points: 0,
+          label: "Not Applicable",
+          id: "Not applicable 2",
+          value: "0000",
         },
       ],
       selectedOption: selectedOption5,
@@ -389,17 +372,15 @@ function App2() {
         {
           label: "Employed for 12 months plus.",
           value: "10",
-          points: 10,
         },
         {
           label: "Employed for six to 12 months.",
           value: "5",
-          points: 5,
         },
         {
-          label: "Not Applicable On this",
-          value: "0",
-          points: 0,
+          label: "Not Applicable",
+          id: "Not applicable 3",
+          value: "000000",
         },
       ],
       selectedOption: selectedOption6,
@@ -455,30 +436,26 @@ function App2() {
           label:
             "You are working in your nominated occupation which is on the current ACT Critical Skills List. Your occupation must be recorded as ‘related to the nominated occupation’ on your SkillSelect EOI.",
           value: "20",
-          points: 20,
         },
         {
           label:
             "You are the primary holder of a subclass 457 / 482 visa and you are working in the occupation nominated by the ACT employer who sponsored your visa. Your occupation must be recorded as ‘related to the nominated occupation’ on your SkillSelect EOI.",
           value: "15",
-          points: 15,
         },
         {
           label:
             "You are working in an occupation that is on the current ACT Critical Skills List; but it is not your nominated occupation. You must have a tertiary qualification relevant to your occupation. Your relevant qualification must be recorded on your Home Affairs SkillSelect EOI.",
           value: "10",
-          points: 10,
         },
         {
           label:
             "You are working in an occupation that has an ANZSCO skill level 1 to 3. You must have a tertiary qualification relevant to your occupation. Your relevant qualification must be recorded on your Home Affairs SkillSelect EOI.",
           value: "5",
-          points: 5,
         },
         {
-          label: "Not Applicable currently here",
+          label: "Not Applicable",
+          id: "Not applicable 4",
           value: "0",
-          points: 0,
         },
       ],
       selectedOption: selectedOption7,
@@ -503,20 +480,20 @@ function App2() {
                Their employment must be continuous unless they were on unpaid leave with a valid medical certificate. Any period of unpaid leave cannot be counted towards the 13 weeks employment.
               </li>
               <li>
-              They meet the Home Affairs requirement for ‘competent’ English or hold an Australian passport. 
+              They meet the Home Affairs requirement for ‘competent’ English or hold an Australian passport.
               </li>
               <li>
               Their employer must provide a Statutory Declaration confirming their employment. See Attachment E.
               </li>
               <li>
-                If they are self-employed on an ABN: 
+                If they are self-employed on an ABN:
                 <ul className="list-disc marker:text-red-900 px-6">
                   <li>
                     Their taxable weekly income exceeds $520 for each week of employment claimed; and
                   </li>
                   <li>
                    Their business has been actively operating in Canberra for at least 12 months.
-                  </li>                 
+                  </li>
                 </ul>
               </li>
             </ul>
@@ -527,24 +504,21 @@ function App2() {
           label:
             "They are working in an occupation on the ACT Critical Skills List. They must have a skill assessment, dated within the last 3 years, that is relevant to their current employment. Their taxable income must be no less than $26 per hour (excluding casual loading).",
           value: "15",
-          points: 15,
         },
         {
           label:
             "They have a skill assessment, dated within the last 3 years, that is relevant to their current ACT employment. Their gross income must be no less than $26 per hour (excluding casual loading).",
           value: "10",
-          points: 10,
         },
         {
           label:
             "They are currently working in any occupation, at any skill level, in Canberra.",
           value: "5",
-          points: 5,
         },
         {
-          label: "Not Applicable currently on this",
+          label: "Not Applicable",
+          id: "Not applicable 5",
           value: "0",
-          points: 0,
         },
       ],
       selectedOption: selectedOption8,
@@ -578,27 +552,23 @@ function App2() {
         {
           label: "Doctoral degree",
           value: "20",
-          points: 20,
         },
         {
           label: "Master’s degree",
           value: "15",
-          points: 15,
         },
         {
           label: "Bachelor’s degree or trade certificate",
           value: "10",
-          points: 10,
         },
         {
           label: "Diploma - at least 18 months full-time study",
           value: "5",
-          points: 5,
         },
         {
-          label: "Inapplicable",
+          label: "Not Applicable",
+          id: "Not applicable 6",
           value: "0",
-          points: 0,
         },
       ],
       selectedOption: selectedOption9,
@@ -613,7 +583,7 @@ function App2() {
       categoryDescription: `
           <div>
             <h1 className="font-bold text-lg">
-             For how many years did you study fulltime to complete a CRICOS* registered course and / or attend a Professional Year (PY) program at an ACT institution in the last eight years? A PY undertaken in the ACT meets the one-year study criteria. 
+             For how many years did you study fulltime to complete a CRICOS* registered course and / or attend a Professional Year (PY) program at an ACT institution in the last eight years? A PY undertaken in the ACT meets the one-year study criteria.
             </h1>
             <ul className="px-3 my-3 list-disc marker:text-red-900 font-semibold flex flex-col gap-1">
               <li>
@@ -630,7 +600,7 @@ function App2() {
               </li>
               <li>
               Two or more courses, including a PY, may be counted to prove the period of ACT study if the courses are not concurrent. The courses do not have to be continuous.
-              </li>            
+              </li>
             </ul>
             <h1 className="font-semibold">
             *CRICOS - Commonwealth Register of Institutions and Courses for Overseas Students.
@@ -641,27 +611,23 @@ function App2() {
         {
           label: "Four academic years or more of study.",
           value: "20",
-          points: 20,
         },
         {
           label: "Three academic years of study.",
           value: "15",
-          points: 15,
         },
         {
           label: "Two academic years of study.",
           value: "10",
-          points: 10,
         },
         {
           label: "One academic year of study.",
           value: "5",
-          points: 5,
         },
         {
-          label: "Not suitable",
+          label: "Not Applicable",
+          id: "Not applicable 7",
           value: "0",
-          points: 0,
         },
       ],
       selectedOption: selectedOption10,
@@ -687,17 +653,15 @@ function App2() {
         {
           label: "Spouse/partner, child.",
           value: "20",
-          points: 20,
         },
         {
           label: "Parent, grandparent, brother, sister, aunt or uncle.",
           value: "10",
-          points: 10,
         },
         {
-          label: "Not fitting",
+          label: "Not Applicable",
+          id: "Not applicable 8",
           value: "0",
-          points: 0,
         },
       ],
       selectedOption: selectedOption11,
@@ -713,7 +677,7 @@ function App2() {
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-lg">
           You (and a spouse/partner if applicable) have invested at least $250,000 cash to purchase a residential or commercial property in Canberra (purchase of land only does not meet this criteria). You hold the Certificate of Title and / or rates notice to prove ownership.
-            </h1>    
+            </h1>
           </div>
       `,
       options: [
@@ -721,12 +685,11 @@ function App2() {
           label:
             "Minimum $250,000 cash investment in ACT residential or commercial property.",
           value: "5",
-          points: 5,
         },
         {
-          label: "Not gonna apply here",
+          label: "Not Applicable",
+          id: "Not applicable 9",
           value: "0",
-          points: 0,
         },
       ],
       selectedOption: selectedOption12,
@@ -791,7 +754,7 @@ function App2() {
           {/* Reset Button */}
           <div className="w-full text-center py-5">
             <button
-              className="bg-red-800 text-white px-6 py-3 rounded-md"
+              className="bg-red-800 cursor-pointer text-white px-6 py-3 rounded-md"
               onClick={handleReset}
             >
               Reset Matrix
