@@ -517,7 +517,7 @@ function App2() {
         },
         {
           label: "They do not meet the 3 months employment criterion",
-          value: "5",
+          value: "4",
         },
         {
           label: "Not Applicable",
