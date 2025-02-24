@@ -516,6 +516,10 @@ function App2() {
           value: "5",
         },
         {
+          label: "They do not meet the 3 months employment criterion",
+          value: "5",
+        },
+        {
           label: "Not Applicable",
           id: "Not applicable 5",
           value: "0",
