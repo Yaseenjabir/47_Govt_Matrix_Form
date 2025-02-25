@@ -6,9 +6,17 @@ interface CategoryProps {
   categoryId: number;
   categoryTitle: string;
   categoryDescription: string;
-  options: { label: string; value: string; id?: string }[];
+  options: {
+    label: string;
+    value: string;
+    id?: string;
+    identity: string;
+    labelHTML: any;
+  }[];
   selectedOption: string | null;
   setSelectedOption: (value: string | null) => void;
+  selectedId: string | null;
+  setSelectedId: (value: string | null) => void;
   setTotalScore: any;
   spinKey: number;
   setSpinKey: any;
@@ -20,19 +28,23 @@ const Category = ({
   options,
   selectedOption,
   setSelectedOption,
+  setSelectedId,
+  selectedId,
   setTotalScore,
   spinKey,
   setSpinKey,
 }: CategoryProps) => {
-  function handleCheckboxChange(value: string) {
-    if (selectedOption !== value) {
+  function handleCheckboxChange(value: string, identity: string) {
+    if (selectedId !== identity) {
       if (selectedOption !== null) {
         setTotalScore((prev: any) => prev - Number(selectedOption));
       }
       setSelectedOption(value);
+      setSelectedId(identity);
       setTotalScore((prev: any) => prev + Number(value));
     } else {
       setSelectedOption(null);
+      setSelectedId(null);
       setTotalScore((prev: any) => prev - Number(value));
     }
     setSpinKey((prevKey: any) => prevKey + 1);
@@ -48,7 +60,7 @@ const Category = ({
           {parse(categoryDescription)}
         </div>
         <div className="flex flex-col p-5 items-center ">
-          {options.map(({ label, value, id }) => (
+          {options.map(({ label, value, id, identity, labelHTML }) => (
             <div
               className="flex w-full pl-5 md:pl-10 font-semibold my-2 items-start justify-start gap-1"
               key={value}
@@ -58,10 +70,10 @@ const Category = ({
                 id={id ? id : label}
                 type="checkbox"
                 value={value}
-                onChange={() => handleCheckboxChange(value)}
-                checked={selectedOption === value}
+                onChange={() => handleCheckboxChange(value, identity)}
+                checked={selectedId === identity}
               />
-              <label htmlFor={id ? id : label}>{label}</label>
+              {parse(labelHTML)}
             </div>
           ))}
         </div>
@@ -94,6 +106,20 @@ function App2() {
   const [selectedOption10, setSelectedOption10] = useState<string | null>(null);
   const [selectedOption11, setSelectedOption11] = useState<string | null>(null);
   const [selectedOption12, setSelectedOption12] = useState<string | null>(null);
+
+  const [selectedId1, setSelectedId1] = useState<string | null>(null);
+  const [selectedId2, setSelectedId2] = useState<string | null>(null);
+  const [selectedId3, setSelectedId3] = useState<string | null>(null);
+  const [selectedId4, setSelectedId4] = useState<string | null>(null);
+  const [selectedId5, setSelectedId5] = useState<string | null>(null);
+  const [selectedId6, setSelectedId6] = useState<string | null>(null);
+  const [selectedId7, setSelectedId7] = useState<string | null>(null);
+  const [selectedId8, setSelectedId8] = useState<string | null>(null);
+  const [selectedId9, setSelectedId9] = useState<string | null>(null);
+  const [selectedId10, setSelectedId10] = useState<string | null>(null);
+  const [selectedId11, setSelectedId11] = useState<string | null>(null);
+  const [selectedId12, setSelectedId12] = useState<string | null>(null);
+
   const [totalScore, setTotalScore] = useState(0);
 
   // Separate spin keys for each category
@@ -164,15 +190,47 @@ function App2() {
           </ul>
       `,
       options: [
-        { label: "Five years plus", value: "25" },
-        { label: "Four to five years", value: "20" },
-        { label: "Three to four years", value: "15" },
-        { label: "Two to three years", value: "10" },
-        { label: "One to two years", value: "5" },
-        { label: "Less than one year", value: "0" },
+        {
+          label: "Five years plus",
+          labelHTML: `<label htmlFor="Five years plus">Five years plus</label>`,
+          value: "25",
+          identity: "group-1-member-1",
+        },
+        {
+          label: "Four to five years",
+          labelHTML: `<label htmlFor="Four to five years">Four to five years</label>`,
+          value: "20",
+          identity: "group-1-member-2",
+        },
+        {
+          label: "Three to four years",
+          labelHTML: `<label htmlFor="Three to four years">Three to four years</label>`,
+          value: "15",
+          identity: "group-1-member-3",
+        },
+        {
+          label: "Two to three years",
+          labelHTML: `<label htmlFor="Two to three years">Two to three years</label>`,
+          value: "10",
+          identity: "group-1-member-4",
+        },
+        {
+          label: "One to two years",
+          value: "5",
+          identity: "group-1-member-5",
+          labelHTML: `<label htmlFor="One to two years">One to two years</label>`,
+        },
+        {
+          label: "Less than one year",
+          labelHTML: `<label htmlFor="Less than one year">Less than one year</label>`,
+          value: "0",
+          identity: "group-1-member-6",
+        },
       ],
       selectedOption: selectedOption1,
       setSelectedOption: setSelectedOption1,
+      selectedId: selectedId1,
+      setSelectedId: setSelectedId1,
       setTotalScore,
       spinKey: spinKey1,
       setSpinKey: setSpinKey1,
@@ -192,15 +250,34 @@ function App2() {
           </div>
       `,
       options: [
-        { label: "Superior", value: "15" },
-        { label: "Proficient", value: "10" },
-        { label: "Competent", value: "0" },
+        {
+          label: "Superior",
+          labelHTML: `<label htmlFor="Superior">Superior</label>`,
+          value: "15",
+          identity: "group-2-member-1",
+        },
+        {
+          label: "Proficient",
+          value: "10",
+          identity: "group-2-member-2",
+
+          labelHTML: `<label htmlFor="Proficient">Proficient</label>`,
+        },
+        {
+          label: "Competent",
+          value: "0",
+          identity: "group-2-member-3",
+
+          labelHTML: `<label htmlFor="Competent">Competent</label>`,
+        },
       ],
       selectedOption: selectedOption2,
       setSelectedOption: setSelectedOption2,
       setTotalScore,
       spinKey: spinKey2,
       setSpinKey: setSpinKey2,
+      selectedId: selectedId2,
+      setSelectedId: setSelectedId2,
     },
     {
       categoryId: 3,
@@ -224,15 +301,33 @@ function App2() {
           </div>
       `,
       options: [
-        { label: "Superior/proficient", value: "5" },
-        { label: "Decent", value: "00" },
-        { label: "Not Applicable", id: "Not applicable 1", value: "0" },
+        {
+          label: "Superior/proficient",
+          labelHTML: `<label htmlFor="Superior/proficient">Superior/proficient</label>`,
+          value: "5",
+          identity: "group-3-member-1",
+        },
+        {
+          label: "Decent",
+          value: "00",
+          identity: "group-3-member-2",
+          labelHTML: `<label htmlFor="Decent">Decent</label>`,
+        },
+        {
+          labelHTML: `<label htmlFor="Not Applicable">Not Applicable</label>`,
+          label: "Not Applicable",
+          id: "Not applicable 1",
+          value: "0",
+          identity: "group-3-member-3",
+        },
       ],
       selectedOption: selectedOption3,
       setSelectedOption: setSelectedOption3,
       setTotalScore,
       spinKey: spinKey3,
       setSpinKey: setSpinKey3,
+      selectedId: selectedId3,
+      setSelectedId: setSelectedId3,
     },
     {
       categoryId: 4,
@@ -249,11 +344,15 @@ function App2() {
           label:
             "Your nominated occupation is ON the ACT Critical Skills List.",
           value: "20",
+          identity: "group-4-member-1",
+          labelHTML: `<label htmlFor="Your nominated occupation is ON the ACT Critical Skills List.">Your nominated occupation is ON the ACT Critical Skills List.</label>`,
         },
         {
           label:
             "Your nominated occupation is NOT on the ACT Critical Skills List.",
           value: "00",
+          identity: "group-4-member-2",
+          labelHTML: `<label htmlFor="Your nominated occupation is NOT on the ACT Critical Skills List.">Your nominated occupation is NOT on the ACT Critical Skills List.</label>`,
         },
       ],
       selectedOption: selectedOption4,
@@ -261,6 +360,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey4,
       setSpinKey: setSpinKey4,
+      selectedId: selectedId4,
+      setSelectedId: setSelectedId4,
     },
     {
       categoryId: 5,
@@ -316,16 +417,22 @@ function App2() {
           label:
             "Your business has actively traded in Canberra for at least twelve months from the date you established or purchased the business. The business has a minimum turnover of at least $200,000 for the last twelve months business activity.",
           value: "20",
+          identity: "group-5-member-1",
+          labelHTML: `<label htmlFor="Your business has actively traded in Canberra for at least twelve months from the date you established or purchased the business. The business has a minimum turnover of at least $200,000 for the last twelve months business activity.">Your business has actively traded in Canberra for at least twelve months from the date you established or purchased the business. The business has a minimum turnover of at least $200,000 for the last twelve months business activity.</label>`,
         },
         {
           label:
             "Your business has actively traded in Canberra for at least six months from the date you established or purchased the business. The business has a minimum annual turnover of at least $100,000 for the last six months business activity.",
           value: "10",
+          identity: "group-5-member-2",
+          labelHTML: `<label htmlFor="Your business has actively traded in Canberra for at least six months from the date you established or purchased the business. The business has a minimum annual turnover of at least $100,000 for the last six months business activity.">Your business has actively traded in Canberra for at least six months from the date you established or purchased the business. The business has a minimum annual turnover of at least $100,000 for the last six months business activity.</label>`,
         },
         {
           label: "Not Applicable",
           id: "Not applicable 2",
           value: "0000",
+          labelHTML: `<label htmlFor="Not applicable 2">Not Applicable</label>`,
+          identity: "group-5-member-3",
         },
       ],
       selectedOption: selectedOption5,
@@ -333,6 +440,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey5,
       setSpinKey: setSpinKey5,
+      selectedId: selectedId5,
+      setSelectedId: setSelectedId5,
     },
     {
       categoryId: 6,
@@ -372,15 +481,21 @@ function App2() {
         {
           label: "Employed for 12 months plus.",
           value: "10",
+          identity: "group-6-member-1",
+          labelHTML: `<label htmlFor="Employed for 12 months plus.">Employed for 12 months plus.</label>`,
         },
         {
           label: "Employed for six to 12 months.",
           value: "5",
+          identity: "group-6-member-2",
+          labelHTML: `<label htmlFor="Employed for six to 12 months.">Employed for six to 12 months.</label>`,
         },
         {
           label: "Not Applicable",
           id: "Not applicable 3",
           value: "000000",
+          identity: "group-6-member-3",
+          labelHTML: `<label htmlFor="Not Applicable 3">Not Applicable</label>`,
         },
       ],
       selectedOption: selectedOption6,
@@ -388,6 +503,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey6,
       setSpinKey: setSpinKey6,
+      selectedId: selectedId6,
+      setSelectedId: setSelectedId6,
     },
     {
       categoryId: 7,
@@ -436,26 +553,36 @@ function App2() {
           label:
             "You are working in your nominated occupation which is on the current ACT Critical Skills List. Your occupation must be recorded as ‘related to the nominated occupation’ on your SkillSelect EOI.",
           value: "20",
+          identity: "group-7-member-1",
+          labelHTML: `<label htmlFor="You are working in your nominated occupation which is on the current ACT Critical Skills List. Your occupation must be recorded as ‘related to the nominated occupation’ on your SkillSelect EOI.">You are working in your nominated occupation which is on the current ACT Critical Skills List. Your occupation must be recorded as ‘related to the nominated occupation’ on your SkillSelect EOI.</label>`,
         },
         {
           label:
             "You are the primary holder of a subclass 457 / 482 visa and you are working in the occupation nominated by the ACT employer who sponsored your visa. Your occupation must be recorded as ‘related to the nominated occupation’ on your SkillSelect EOI.",
           value: "15",
+          identity: "group-7-member-2",
+          labelHTML: `<label htmlFor="You are the primary holder of a subclass 457 / 482 visa and you are working in the occupation nominated by the ACT employer who sponsored your visa. Your occupation must be recorded as ‘related to the nominated occupation’ on your SkillSelect EOI.">You are the primary holder of a subclass 457 / 482 visa and you are working in the occupation nominated by the ACT employer who sponsored your visa. Your occupation must be recorded as ‘related to the nominated occupation’ on your SkillSelect EOI.</label>`,
         },
         {
           label:
             "You are working in an occupation that is on the current ACT Critical Skills List; but it is not your nominated occupation. You must have a tertiary qualification relevant to your occupation. Your relevant qualification must be recorded on your Home Affairs SkillSelect EOI.",
           value: "10",
+          identity: "group-7-member-3",
+          labelHTML: `<label htmlFor="You are working in an occupation that is on the current ACT Critical Skills List; but it is not your nominated occupation. You must have a tertiary qualification relevant to your occupation. Your relevant qualification must be recorded on your Home Affairs SkillSelect EOI.">You are working in an occupation that is on the current ACT Critical Skills List; but it is not your nominated occupation. You must have a tertiary qualification relevant to your occupation. Your relevant qualification must be recorded on your Home Affairs SkillSelect EOI.</label>`,
         },
         {
           label:
             "You are working in an occupation that has an ANZSCO skill level 1 to 3. You must have a tertiary qualification relevant to your occupation. Your relevant qualification must be recorded on your Home Affairs SkillSelect EOI.",
           value: "5",
+          identity: "group-7-member-4",
+          labelHTML: `<label htmlFor="You are working in an occupation that has an ANZSCO skill level 1 to 3. You must have a tertiary qualification relevant to your occupation. Your relevant qualification must be recorded on your Home Affairs SkillSelect EOI.">You are working in an occupation that has an ANZSCO skill level 1 to 3. You must have a tertiary qualification relevant to your occupation. Your relevant qualification must be recorded on your Home Affairs SkillSelect EOI.</label>`,
         },
         {
           label: "Not Applicable",
           id: "Not applicable 4",
           value: "0",
+          identity: "group-7-member-5",
+          labelHTML: `<label htmlFor="Not Applicable 4">Not Applicable</label>`,
         },
       ],
       selectedOption: selectedOption7,
@@ -463,6 +590,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey7,
       setSpinKey: setSpinKey7,
+      selectedId: selectedId7,
+      setSelectedId: setSelectedId7,
     },
     {
       categoryId: 8,
@@ -504,25 +633,61 @@ function App2() {
           label:
             "They are working in an occupation on the ACT Critical Skills List. They must have a skill assessment, dated within the last 3 years, that is relevant to their current employment. Their taxable income must be no less than $26 per hour (excluding casual loading).",
           value: "15",
+          identity: "group-8-member-1",
+          labelHTML: `<label htmlFor="They are working in an occupation on the ACT Critical Skills List. They must have a skill assessment, dated within the last 3 years, that is relevant to their current employment. Their taxable income must be no less than $26 per hour (excluding casual loading).">They are working in an occupation on the ACT Critical Skills List. They must have a skill assessment, dated within the last 3 years, that is relevant to their current employment. Their taxable income must be no less than $26 per hour (excluding casual loading).</label>`,
         },
         {
           label:
             "They have a skill assessment, dated within the last 3 years, that is relevant to their current ACT employment. Their gross income must be no less than $26 per hour (excluding casual loading).",
           value: "10",
+          identity: "group-8-member-2",
+          labelHTML: `<label htmlFor="They have a skill assessment, dated within the last 3 years, that is relevant to their current ACT employment. Their gross income must be no less than $26 per hour (excluding casual loading).">They have a skill assessment, dated within the last 3 years, that is relevant to their current ACT employment. Their gross income must be no less than $26 per hour (excluding casual loading).</label>`,
         },
         {
           label:
             "They are currently working in any occupation, at any skill level, in Canberra.",
           value: "5",
+          identity: "group-8-member-3",
+          labelHTML: `<div>
+                <label htmlFor="They are currently working in any occupation, at any skill level, in Canberra.">
+                  They are currently working in any occupation, at any skill
+                  level, in Canberra.
+                </label>
+                <br />
+                <br />
+                <br />
+                <span className="underline font-bold text-gray-700">
+                  Spouse employability
+                </span>
+              </div>`,
         },
         {
           label: "They do not meet the 3 months employment criterion",
-          value: "4",
+          value: "5",
+          identity: "group-8-member-4",
+          labelHTML: ` <label htmlFor="They do not meet the 3 months employment criterion" className="font-semibold">
+                <h1>
+                  They do not meet the 3 months employment criterion, but they:{" "}
+                </h1>
+                <ul className="list-disc px-2">
+                  <li>
+                    Have a tertiary qualification (a trade certificate; a
+                    Bachelors degree; a Master's degree or a PhD) from an
+                    Australian institution in any occupation; and
+                  </li>
+                  <li>
+                    They meet the Home Affairs requirement for ‘competent’
+                    English or hold an Australian passport.
+                  </li>
+                </ul>
+              </label>`,
         },
         {
           label: "Not Applicable",
           id: "Not applicable 5",
           value: "0",
+          identity: "group-8-member-5",
+          labelHTML: `<label htmlFor="Not Applicable 5">Not Applicable</label>`,
         },
       ],
       selectedOption: selectedOption8,
@@ -530,6 +695,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey8,
       setSpinKey: setSpinKey8,
+      selectedId: selectedId8,
+      setSelectedId: setSelectedId8,
     },
     {
       categoryId: 9,
@@ -556,23 +723,33 @@ function App2() {
         {
           label: "Doctoral degree",
           value: "20",
+          identity: "group-9-member-1",
+          labelHTML: `<label htmlFor="Doctoral degree">Doctoral degree</label>`,
         },
         {
           label: "Master’s degree",
           value: "15",
+          identity: "group-9-member-2",
+          labelHTML: `<label htmlFor="Master’s degree">Master’s degree</label>`,
         },
         {
           label: "Bachelor’s degree or trade certificate",
           value: "10",
+          identity: "group-9-member-3",
+          labelHTML: `<label htmlFor="Bachelor’s degree or trade certificate">Bachelor’s degree or trade certificate</label>`,
         },
         {
           label: "Diploma - at least 18 months full-time study",
           value: "5",
+          identity: "group-9-member-4",
+          labelHTML: `<label htmlFor="Diploma - at least 18 months full-time study">Diploma - at least 18 months full-time study</label>`,
         },
         {
           label: "Not Applicable",
           id: "Not applicable 6",
           value: "0",
+          identity: "group-9-member-5",
+          labelHTML: `<label htmlFor="Not applicable 6">Not applicable</label>`,
         },
       ],
       selectedOption: selectedOption9,
@@ -580,6 +757,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey9,
       setSpinKey: setSpinKey9,
+      selectedId: selectedId9,
+      setSelectedId: setSelectedId9,
     },
     {
       categoryId: 10,
@@ -615,23 +794,33 @@ function App2() {
         {
           label: "Four academic years or more of study.",
           value: "20",
+          identity: "group-10-member-1",
+          labelHTML: `<label htmlFor="Four academic years or more of study.">Four academic years or more of study.</label>`,
         },
         {
           label: "Three academic years of study.",
           value: "15",
+          identity: "group-10-member-2",
+          labelHTML: `<label htmlFor="Three academic years of study.">Three academic years of study.</label>`,
         },
         {
           label: "Two academic years of study.",
           value: "10",
+          identity: "group-10-member-3",
+          labelHTML: `<label htmlFor="Two academic years of study.">Two academic years of study.</label>`,
         },
         {
           label: "One academic year of study.",
           value: "5",
+          identity: "group-10-member-4",
+          labelHTML: `<label htmlFor="One academic year of study.">One academic year of study.</label>`,
         },
         {
           label: "Not Applicable",
           id: "Not applicable 7",
           value: "0",
+          identity: "group-10-member-5",
+          labelHTML: `<label htmlFor="Not applicable 7">Not applicable</label>`,
         },
       ],
       selectedOption: selectedOption10,
@@ -639,6 +828,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey10,
       setSpinKey: setSpinKey10,
+      selectedId: selectedId10,
+      setSelectedId: setSelectedId10,
     },
     {
       categoryId: 11,
@@ -657,15 +848,21 @@ function App2() {
         {
           label: "Spouse/partner, child.",
           value: "20",
+          identity: "group-11-member-1",
+          labelHTML: `<label htmlFor="Spouse/partner, child.">Spouse/partner, child.</label>`,
         },
         {
           label: "Parent, grandparent, brother, sister, aunt or uncle.",
           value: "10",
+          identity: "group-11-member-2",
+          labelHTML: `<label htmlFor="Parent, grandparent, brother, sister, aunt or uncle.">Parent, grandparent, brother, sister, aunt or uncle.</label>`,
         },
         {
           label: "Not Applicable",
           id: "Not applicable 8",
           value: "0",
+          identity: "group-11-member-3",
+          labelHTML: `<label htmlFor="Not Applicable 8">Not Applicable</label>`,
         },
       ],
       selectedOption: selectedOption11,
@@ -673,6 +870,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey11,
       setSpinKey: setSpinKey11,
+      selectedId: selectedId11,
+      setSelectedId: setSelectedId11,
     },
     {
       categoryId: 12,
@@ -689,11 +888,15 @@ function App2() {
           label:
             "Minimum $250,000 cash investment in ACT residential or commercial property.",
           value: "5",
+          identity: "group-12-member-1",
+          labelHTML: `<label htmlFor="Minimum $250,000 cash investment in ACT residential or commercial property.">Minimum $250,000 cash investment in ACT residential or commercial property.</label>`,
         },
         {
           label: "Not Applicable",
           id: "Not applicable 9",
           value: "0",
+          identity: "group-12-member-2",
+          labelHTML: `<label htmlFor="Not applicable 9">Not applicable</label>`,
         },
       ],
       selectedOption: selectedOption12,
@@ -701,6 +904,8 @@ function App2() {
       setTotalScore,
       spinKey: spinKey12,
       setSpinKey: setSpinKey12,
+      selectedId: selectedId12,
+      setSelectedId: setSelectedId12,
     },
   ];
 
@@ -717,7 +922,21 @@ function App2() {
     setSelectedOption10(null);
     setSelectedOption11(null);
     setSelectedOption12(null);
+
     setTotalScore(0);
+
+    setSelectedId1(null);
+    setSelectedId2(null);
+    setSelectedId3(null);
+    setSelectedId4(null);
+    setSelectedId5(null);
+    setSelectedId6(null);
+    setSelectedId7(null);
+    setSelectedId8(null);
+    setSelectedId9(null);
+    setSelectedId10(null);
+    setSelectedId11(null);
+    setSelectedId12(null);
     // Reset all spin keys on reset
     setSpinKey1((prevKey) => prevKey + 1);
     setSpinKey2((prevKey) => prevKey + 1);
