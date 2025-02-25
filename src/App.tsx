@@ -667,7 +667,7 @@ function App2() {
           identity: "group-8-member-4",
           labelHTML: ` <label htmlFor="They do not meet the 3 months employment criterion" className="font-semibold">
                 <h1>
-                  They do not meet the 3 months employment criterion, but they:{" "}
+                  They do not meet the 3 months employment criterion, but they:
                 </h1>
                 <ul className="list-disc px-2">
                   <li>
